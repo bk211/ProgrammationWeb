@@ -17,7 +17,7 @@ const main = event => {
 		console.log("2");
 		ctx = myElement.getContext("2d");
 		img = new Image();
-		img.src = "img/pencil.jpg";
+		img.src = "img/car.jpg";
 		ctx.drawImage(img,0,0);
 		myElement.addEventListener("click", onClick);
 	//	document.body.appendChild(img);
