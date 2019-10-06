@@ -3,29 +3,7 @@ window.addEventListener("load", event => {
     main();
 });
 
-const main = event => {
 
-    console.log("MAIN");
-
-    //		let component = new MyComponent("canvas");
-    canvas = document.createElement("canvas");
-    document.body.appendChild(canvas);
-    canvas.width = 1920;
-    canvas.height = 1080;
-
-    canvas.style.width = "900px";
-    canvas.style.height = "600px";
-
-    canvas.style.backgroundColor = "blue";
-    ctx = canvas.getContext("2d");
-    img = new Image();
-    img.src = "img/hibou.jpg";
-//    img.style.width = "900px";
-//    img.style.height = "600px";
-    document.body.appendChild(img);
-    canvas.addEventListener("click", onClick);
-
-}
 
 convScreenXToPictureX = x =>{
     pictureX = x / parseInt(canvas.style.width) * img.width  ;
@@ -58,12 +36,37 @@ const onClick = event => {
     //console.log(img.width);//1920
     //console.log(img.height);//1080
     //void ctx.drawImage(image, sx, sy, sLargeur, sHauteur, dx, dy, dLargeur, dHauteur);
-    ctx.drawImage(img, sx, sy, 200, 200, sx, sy, 200, 200);
+    ctx.drawImage(img, sx, sy, 100, 100, sx, sy, 100, 100);
     //	console.log(MM.randRange(0,5));
-
-
 }
 
+const randomSwap= e =>{
+    console.log("hello");
+}
+
+
+const main = event => {
+
+    console.log("MAIN");
+    canvas = document.createElement("canvas");
+    canvas.id ="myCanvas";
+    document.body.appendChild(canvas);
+    canvas.width = 1920;
+    canvas.height = 1080;
+    canvas.style.width = "900px";
+    canvas.style.height = "600px";
+
+    ctx = canvas.getContext("2d");
+    img = new Image();
+    img.src = "img/hibou.jpg";
+    defaultImage = new Image();
+    defaultImage.src = "img/car.jpg";
+    defaultImage.onload = ()=>{
+        ctx.drawImage(defaultImage, 0 ,0);
+    }
+    canvas.addEventListener("click", onClick);
+    randomSwap();
+}
 /*
 class MyComponent {
 
