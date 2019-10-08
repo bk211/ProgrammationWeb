@@ -6,9 +6,19 @@ let numberOfCol = 20;
 let numberOfLine = 15;
 let imgWidth = 1920 / numberOfCol;
 let imgHeight = 1080 / numberOfLine;
-let tab = Array(numberOfCol * numberOfLine);
-console.log("array created:")
+const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
+let tab = range(0,numberOfCol*numberOfLine-1,1);
 
+
+console.log("array init");
+console.log(tab);
+
+NearestX = x =>{//retourne la position x du cadre le plus proche
+    return Math.trunc(x / imgWidth)*imgWidth;
+}
+NearestY = y =>{//retourne la position y du cadre le plus proche
+    return Math.trunc(y / imgHeight)*imgHeight;
+}
 
 
 convScreenXToPictureX = x =>{
@@ -49,30 +59,24 @@ const onClick = event => {
 
 
 const randomSwap= e =>{
-    console.log("start randomSwap");
-
-
-    window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
-                              window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-
     let canvas = document.getElementById("myCanvas");
     let ctx = canvas.getContext("2d");
-    let cx = event.clientX; //entre 0 et canvas.style.width
-    let cy = event.clientY; //entre 0 et canvas.style.height
-    let sx = convScreenXToPictureX(cx);
-    let sy = convScreenYToPictureY(cy);
+    let sx = convScreenXToPictureX(event.clientX);
+    let sy = convScreenYToPictureY(event.clientY);
 
-    NearestX = x =>{//retourne la position x du cadre le plus proche
-        return Math.trunc(x / imgWidth)*imgWidth;
-    }
-    NearestY = y =>{//retourne la position y du cadre le plus proche
-        return Math.trunc(y / imgHeight)*imgHeight;
-    }
+    animationRandom = () =>{
+        console.log("start randomSwap");
+        let carreChoisit = MM.randRange(0, tab.length);
+        tab.splice(carreChoisit,1);
+        console.log(carreChoisit);
+        let carreX = (carreChoisit % numberOfCol) * imgWidth;
+        let carreY = Math.trunc(carreChoisit / numberOfCol) * imgHeight;
+        ctx.drawImage(img, carreX, carreY, imgWidth, imgHeight, carreX, carreY, imgWidth, imgHeight);
+        
 
-    ctx.drawImage(img, NearestX(sx), NearestY(sy), imgWidth, imgHeight, NearestX(sx), NearestY(sy), imgWidth, imgHeight);
+    }
 
 }
-
 
 
 
