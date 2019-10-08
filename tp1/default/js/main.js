@@ -67,7 +67,7 @@ const randomSwap= e =>{
             else if(currentAnimation == 2){
                 img.src="img/hibou.jpg";
             }
-            currentAnimation++;
+            currentAnimation = (currentAnimation+1) % 3;
             tab.fill(1);
         }
     }
@@ -88,8 +88,8 @@ const main = event => {
     document.body.appendChild(canvas);
     canvas.width = 1920;
     canvas.height = 1080;
-    canvas.style.width = "900px";
-    canvas.style.height = "600px";
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
 
     let ctx = canvas.getContext("2d");
     defaultImage = new Image();
