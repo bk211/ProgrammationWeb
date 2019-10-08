@@ -59,17 +59,21 @@ const randomSwap= e =>{
         if(!tab.includes(1)){
             console.log("stop randomSwap");
             window.cancelAnimationFrame(animationId);
-            img.src="img/tree.jpg";
+            if(currentAnimation == 0){
+                img.src="img/tree.jpg";
+            }else if(currentAnimation == 1){
+                img.src="img/car.jpg";
+            }
+            else if(currentAnimation == 2){
+                img.src="img/hibou.jpg";
+            }
             currentAnimation++;
             tab.fill(1);
         }
     }
-    if(currentAnimation == 0){
+    if(currentAnimation <=2){
         console.log("start random");
         animationRandom();
-    }else if(currentAnimation == 1){
-            console.log("start random");
-            animationRandom();
     }
 
 }
