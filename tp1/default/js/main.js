@@ -2,19 +2,30 @@ window.addEventListener("load", event => {
     console.log("loaded");
     main();
 });
+let numberOfCol = 20;
+let numberOfLine = 15;
+let imgWidth = 1920 / numberOfCol;
+let imgHeight = 1080 / numberOfLine;
+let tab = Array(numberOfCol * numberOfLine);
+console.log("array created:")
 
 
 
 convScreenXToPictureX = x =>{
+    let canvas = document.getElementById("myCanvas");
     pictureX = x / parseInt(canvas.style.width) * img.width  ;
     return pictureX;
 }
 
 convScreenYToPictureY = y =>{
+    let canvas = document.getElementById("myCanvas");
     pictureY = y / parseInt(canvas.style.height) * img.height  ;
     return pictureY;
 }
 const onClick = event => {
+    let canvas = document.getElementById("myCanvas");
+    let ctx = canvas.getContext("2d");
+
     console.log("clicked");
     //let iH = window.innerHeight;
     //let iW = window.innerWidth;
@@ -29,10 +40,6 @@ const onClick = event => {
 
     console.log(convScreenXToPictureX(cx))
     console.log(convScreenYToPictureY(cy))
-
-    //    console.log(cx/ parseInt(canvas.style.width));
-	//let sx = cx/parseInt(canvas.style.width) * 1920; // source x
-	//let sy = cy/parseInt(canvas.style.height) * 1080; // source y
     //console.log(img.width);//1920
     //console.log(img.height);//1080
     //void ctx.drawImage(image, sx, sy, sLargeur, sHauteur, dx, dy, dLargeur, dHauteur);
@@ -40,15 +47,39 @@ const onClick = event => {
     //	console.log(MM.randRange(0,5));
 }
 
+
 const randomSwap= e =>{
-    console.log("hello");
+    console.log("start randomSwap");
+
+
+    window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                              window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+
+    let canvas = document.getElementById("myCanvas");
+    let ctx = canvas.getContext("2d");
+    let cx = event.clientX; //entre 0 et canvas.style.width
+    let cy = event.clientY; //entre 0 et canvas.style.height
+    let sx = convScreenXToPictureX(cx);
+    let sy = convScreenYToPictureY(cy);
+
+    NearestX = x =>{//retourne la position x du cadre le plus proche
+        return Math.trunc(x / imgWidth)*imgWidth;
+    }
+    NearestY = y =>{//retourne la position y du cadre le plus proche
+        return Math.trunc(y / imgHeight)*imgHeight;
+    }
+
+    ctx.drawImage(img, NearestX(sx), NearestY(sy), imgWidth, imgHeight, NearestX(sx), NearestY(sy), imgWidth, imgHeight);
+
 }
+
+
 
 
 const main = event => {
 
     console.log("MAIN");
-    canvas = document.createElement("canvas");
+    let canvas = document.createElement("canvas");
     canvas.id ="myCanvas";
     document.body.appendChild(canvas);
     canvas.width = 1920;
@@ -56,7 +87,7 @@ const main = event => {
     canvas.style.width = "900px";
     canvas.style.height = "600px";
 
-    ctx = canvas.getContext("2d");
+    let ctx = canvas.getContext("2d");
     img = new Image();
     img.src = "img/hibou.jpg";
     defaultImage = new Image();
@@ -64,8 +95,8 @@ const main = event => {
     defaultImage.onload = ()=>{
         ctx.drawImage(defaultImage, 0 ,0);
     }
-    canvas.addEventListener("click", onClick);
-    randomSwap();
+//    canvas.addEventListener("click", onClick);
+    canvas.addEventListener("click", randomSwap);
 }
 /*
 class MyComponent {
