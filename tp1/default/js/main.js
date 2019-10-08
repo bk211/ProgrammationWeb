@@ -8,6 +8,7 @@ let imgWidth = 1920 / numberOfCol;
 let imgHeight = 1080 / numberOfLine;
 let tab = Array(numberOfCol*numberOfLine);
 tab.fill(1);
+let currentImageIndex =0;
 
 window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
                               window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
@@ -40,13 +41,12 @@ const randomSwap= e =>{
     let sy = convScreenYToPictureY(event.clientY);
 
     animationRandom = () =>{
-        console.log("start randomSwap");
         let carreChoisit = MM.randRange(0, tab.length);
         while(!tab[carreChoisit]){
             carreChoisit = MM.randRange(0, tab.length);
         }
         tab[carreChoisit]=0;
-        console.log(carreChoisit);
+//        console.log(carreChoisit);
         let carreX = (carreChoisit % numberOfCol) * imgWidth;
         let carreY = Math.trunc(carreChoisit / numberOfCol) * imgHeight;
         ctx.drawImage(img, carreX, carreY, imgWidth, imgHeight, carreX, carreY, imgWidth, imgHeight);
@@ -54,6 +54,8 @@ const randomSwap= e =>{
         if(!tab.includes(1)){
             console.log("stop randomSwap");
             window.cancelAnimationFrame(animationId);
+            swapImage();
+            tab.fill(0);
         }
     }
     animationRandom();
@@ -85,19 +87,10 @@ const main = event => {
 
 }
 
-class MyGallery {
-	constructor() {
-        let srcArray = ["car.jpg","hibou.jpg","tree.jpg"]
-        let currentImageIndex = 0;
-        let currentImage = new Image();
-        currentImage.src = srcArray[currentImageIndex];
-        let GallerySize = srcArray.length;
-        console.log("MyGallery is set");
-	}
-
-    swapImage = () =>{
-        currentImageIndex = (currentImageIndex + 1) % GallerySize;
-        currentImage.src = srcArray[currentImageIndex];
-    }
+swapImage = () =>{
+    let srcArray = ["car.jpg","hibou.jpg","tree.jpg"];
+    currentImageIndex = (currentImageIndex+1) % srcArray.length ;
+    console.log(currentImageIndex);
+    img.setAttribute("src", srcArray[currentImageIndex]);
 
 }
