@@ -6,12 +6,12 @@ let numberOfCol = 20;
 let numberOfLine = 15;
 let imgWidth = 1920 / numberOfCol;
 let imgHeight = 1080 / numberOfLine;
-const range = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
-let tab = range(0,numberOfCol*numberOfLine-1,1);
+let tab = Array(numberOfCol*numberOfLine);
+tab.fill(1);
 
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                              window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
-console.log("array init");
-console.log(tab);
 
 NearestX = x =>{//retourne la position x du cadre le plus proche
     return Math.trunc(x / imgWidth)*imgWidth;
@@ -32,31 +32,6 @@ convScreenYToPictureY = y =>{
     pictureY = y / parseInt(canvas.style.height) * img.height  ;
     return pictureY;
 }
-const onClick = event => {
-    let canvas = document.getElementById("myCanvas");
-    let ctx = canvas.getContext("2d");
-
-    console.log("clicked");
-    //let iH = window.innerHeight;
-    //let iW = window.innerWidth;
-    //console.log(canvas.width); // 1920
-    //console.log(canvas.height); // 1080
-    let cx = event.clientX; //entre 0 et canvas.style.width
-    let cy = event.clientY; //entre 0 et canvas.style.height
-    console.log("cx = "+cx);
-    console.log("cy = "+ cy);
-    let sx = convScreenXToPictureX(cx);
-    let sy = convScreenYToPictureY(cy);
-
-    console.log(convScreenXToPictureX(cx))
-    console.log(convScreenYToPictureY(cy))
-    //console.log(img.width);//1920
-    //console.log(img.height);//1080
-    //void ctx.drawImage(image, sx, sy, sLargeur, sHauteur, dx, dy, dLargeur, dHauteur);
-    ctx.drawImage(img, sx, sy, 100, 100, sx, sy, 100, 100);
-    //	console.log(MM.randRange(0,5));
-}
-
 
 const randomSwap= e =>{
     let canvas = document.getElementById("myCanvas");
@@ -67,14 +42,21 @@ const randomSwap= e =>{
     animationRandom = () =>{
         console.log("start randomSwap");
         let carreChoisit = MM.randRange(0, tab.length);
-        tab.splice(carreChoisit,1);
+        while(!tab[carreChoisit]){
+            carreChoisit = MM.randRange(0, tab.length);
+        }
+        tab[carreChoisit]=0;
         console.log(carreChoisit);
         let carreX = (carreChoisit % numberOfCol) * imgWidth;
         let carreY = Math.trunc(carreChoisit / numberOfCol) * imgHeight;
         ctx.drawImage(img, carreX, carreY, imgWidth, imgHeight, carreX, carreY, imgWidth, imgHeight);
-        
-
+        animationId = window.requestAnimationFrame(animationRandom);
+        if(!tab.includes(1)){
+            console.log("stop randomSwap");
+            window.cancelAnimationFrame(animationId);
+        }
     }
+    animationRandom();
 
 }
 
@@ -99,15 +81,23 @@ const main = event => {
     defaultImage.onload = ()=>{
         ctx.drawImage(defaultImage, 0 ,0);
     }
-//    canvas.addEventListener("click", onClick);
     canvas.addEventListener("click", randomSwap);
-}
-/*
-class MyComponent {
 
-	constructor(name) {
-	//	console.log("my name is", name);
+}
+
+class MyGallery {
+	constructor() {
+        let srcArray = ["car.jpg","hibou.jpg","tree.jpg"]
+        let currentImageIndex = 0;
+        let currentImage = new Image();
+        currentImage.src = srcArray[currentImageIndex];
+        let GallerySize = srcArray.length;
+        console.log("MyGallery is set");
 	}
 
+    swapImage = () =>{
+        currentImageIndex = (currentImageIndex + 1) % GallerySize;
+        currentImage.src = srcArray[currentImageIndex];
+    }
+
 }
-*/
