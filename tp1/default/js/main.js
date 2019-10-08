@@ -8,11 +8,10 @@ let imgWidth = 1920 / numberOfCol;
 let imgHeight = 1080 / numberOfLine;
 let tab = Array(numberOfCol*numberOfLine);
 tab.fill(1);
-let currentImageIndex =0;
 
 window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
                               window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
-
+window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
 
 NearestX = x =>{//retourne la position x du cadre le plus proche
     return Math.trunc(x / imgWidth)*imgWidth;
@@ -34,6 +33,9 @@ convScreenYToPictureY = y =>{
     return pictureY;
 }
 
+
+
+
 const randomSwap= e =>{
     let canvas = document.getElementById("myCanvas");
     let ctx = canvas.getContext("2d");
@@ -42,8 +44,11 @@ const randomSwap= e =>{
 
     animationRandom = () =>{
         let carreChoisit = MM.randRange(0, tab.length);
+        let i = 0;
         while(!tab[carreChoisit]){
             carreChoisit = MM.randRange(0, tab.length);
+            i++;
+            if(i>10){ break;}
         }
         tab[carreChoisit]=0;
 //        console.log(carreChoisit);
@@ -54,11 +59,18 @@ const randomSwap= e =>{
         if(!tab.includes(1)){
             console.log("stop randomSwap");
             window.cancelAnimationFrame(animationId);
-            swapImage();
-            tab.fill(0);
+            img.src="img/tree.jpg";
+            currentAnimation++;
+            tab.fill(1);
         }
     }
-    animationRandom();
+    if(currentAnimation == 0){
+        console.log("start random");
+        animationRandom();
+    }else if(currentAnimation == 1){
+            console.log("start random");
+            animationRandom();
+    }
 
 }
 
@@ -76,21 +88,15 @@ const main = event => {
     canvas.style.height = "600px";
 
     let ctx = canvas.getContext("2d");
+    defaultImage = new Image();
     img = new Image();
     img.src = "img/hibou.jpg";
-    defaultImage = new Image();
     defaultImage.src = "img/car.jpg";
     defaultImage.onload = ()=>{
         ctx.drawImage(defaultImage, 0 ,0);
     }
+    currentAnimation = 0;
+
     canvas.addEventListener("click", randomSwap);
-
-}
-
-swapImage = () =>{
-    let srcArray = ["car.jpg","hibou.jpg","tree.jpg"];
-    currentImageIndex = (currentImageIndex+1) % srcArray.length ;
-    console.log(currentImageIndex);
-    img.setAttribute("src", srcArray[currentImageIndex]);
 
 }
