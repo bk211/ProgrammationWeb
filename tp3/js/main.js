@@ -1,16 +1,49 @@
 window.addEventListener("load", event => {
-    console.log("loaded");
+    //console.log("loaded");
     main();
 });
 
+users = new Array();
+
 
 function sleep(ms){
-    let callback, prom = new Promise(resolve => callback, resolve);
+    console.log("sleep",ms);
+    let callback, prom = new Promise(resolve => callback =resolve);
     setTimeout(callback, ms);
     return prom;
 }
 
-const main = event => {
-
-    console.log("MAIN");
+class Person{
+    constructor(){
+    this.firstName = faker.fake("{{name.firstName}}");
+    this.lastName = faker.fake("{{name.lastName}}");
+    this.country = faker.fake("{{address.country}}");
+//    this.age = faker.fake("{{date.past}}");
+    this.age = MM.randRange(0,100);
+    this.gender =MM.randRange(0,1);
+    }
 }
+
+
+function generateProfiles(){
+    for (let i = 0; i < 500; i++) {
+        users.push(new Person());
+    }
+}
+
+async function findUserByAge(age){
+    await sleep(50);
+    console.log("start filtering")
+    return users.filter(user => user.age> age);
+}
+
+
+// const f = async() = {}
+async function main() {
+    console.log("hello");
+    console.log(users);
+    console.log("done");
+    console.log(findUserByAge(users, 0));
+}
+
+generateProfiles();
