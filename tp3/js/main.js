@@ -3,7 +3,7 @@ window.addEventListener("load", event => {
     main();
 });
 
-users = new Array();
+users = new Array(500).fill(undefined);
 
 
 function sleep(ms){
@@ -18,7 +18,6 @@ class Person{
     this.firstName = faker.fake("{{name.firstName}}");
     this.lastName = faker.fake("{{name.lastName}}");
     this.country = faker.fake("{{address.country}}");
-//    this.age = faker.fake("{{date.past}}");
     this.age = MM.randRange(0,100);
     this.gender =MM.randRange(0,1);
     }
@@ -26,9 +25,7 @@ class Person{
 
 
 function generateProfiles(){
-    for (let i = 0; i < 500; i++) {
-        users.push(new Person());
-    }
+    users = users.map( item => new Person());
 }
 
 async function findUserByAge(age){
@@ -42,11 +39,16 @@ async function main() {
     /*console.log("hello");
     await sleep(500);
     console.log(users);
+<<<<<<< HEAD
     console.log("done");*/
     //let foo = users.filter(user => user.age> 50);
     //console.log(foo);
     console.log(await findUserByAge(50));
     console.log("done")
+=======
+    console.log("done");
+    //console.log(findUserByAge(users, 0));
+>>>>>>> 9558622e7b7ddb53105cc49deb34edc02881c5e8
 }
 
 generateProfiles();
