@@ -32,18 +32,21 @@ function generateProfiles(){
 }
 
 async function findUserByAge(age){
-    await sleep(50);
-    console.log("start filtering")
+    await sleep(500);
     return users.filter(user => user.age> age);
 }
 
 
 // const f = async() = {}
 async function main() {
-    console.log("hello");
+    /*console.log("hello");
+    await sleep(500);
     console.log(users);
-    console.log("done");
-    console.log(findUserByAge(users, 0));
+    console.log("done");*/
+    //let foo = users.filter(user => user.age> 50);
+    //console.log(foo);
+    console.log(await findUserByAge(50));
+    console.log("done")
 }
 
 generateProfiles();
