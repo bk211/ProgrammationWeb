@@ -39,16 +39,11 @@ async function main() {
     /*console.log("hello");
     await sleep(500);
     console.log(users);
-<<<<<<< HEAD
     console.log("done");*/
     //let foo = users.filter(user => user.age> 50);
     //console.log(foo);
     console.log(await findUserByAge(50));
     console.log("done")
-=======
-    console.log("done");
-    //console.log(findUserByAge(users, 0));
->>>>>>> 9558622e7b7ddb53105cc49deb34edc02881c5e8
 }
 
 generateProfiles();
