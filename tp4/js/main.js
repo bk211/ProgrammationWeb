@@ -1,9 +1,15 @@
 window.addEventListener("load", event => {main()});
 
+const get = async url ={
+    let result = await fetch(url);
+    let response = await result.json();
+    return result;
+}
+
+
 const main = async () => {
     console.log("MAIN");
 
-    let post = "nnnnn"
     let result = await fetch('https://ilusio.dev/base/gettest');
     let response = await result.json();
     console.log(result);
